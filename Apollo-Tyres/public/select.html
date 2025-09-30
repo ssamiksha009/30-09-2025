@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select - Apollo Tyres R&D</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/select.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="logo-container">
+            <img src="/images/Apollo-Tyres-Logo.png" alt="Apollo Tyres Logo" class="logo"
+                onclick="window.location.href='/index.html'" style="cursor: pointer;">
+        </div>
+        <h1 class="header-title">Tyre Virtualization Tool</h1>
+        <button id="logoutBtn" class="logout-button">Logout</button>
+    </header>
+
+    <main>
+  <!-- protocol title + total time aligned on same line -->
+  <div class="protocol-row">
+    <div id="protocol-title" class="protocol-title"></div>
+
+    <!-- Total time moved to the right on the same row as the table header -->
+    <div id="total-time" class="total-time" aria-live="polite" title="Sum of recorded run durations for this protocol/project">
+      <span class="total-label">Total time taken:</span>
+      <span id="total-time-value">00:00:00</span>
+    </div>
+  </div>
+
+  <!-- ===== Protocol controls (Run All, Run Selected, Pause, Stop, Retry, Skip) ===== -->
+  <div class="protocol-controls" role="toolbar" aria-label="Protocol controls">
+    <button id="runAllBtn" class="control-btn" title="Run all tests sequentially">
+      <!-- SVG play-all -->
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 4v16l12-8L4 4z" fill="currentColor"/><rect x="18" y="5" width="2" height="14" rx="1" fill="currentColor"/></svg>
+      <span>Run All</span>
+    </button>
+
+    <button id="runSelectedBtn" class="control-btn disabled" title="Run selected tests" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 13h2v-2H3v2zm4 0h14v-2H7v2zM3 7h2V5H3v2z" fill="currentColor"/></svg>
+      <span>Run Selected</span>
+    </button>
+
+    <button id="pauseResumeBtn" class="control-btn" title="Pause / Resume queue" data-paused="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/></svg>
+      <span>Pause</span>
+    </button>
+
+    <button id="abortQueueBtn" class="control-btn danger" title="Abort queued runs" style="display:none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Stop</span>
+    </button>
+
+    <button id="retryFailedBtn" class="control-btn" title="Retry failed tests" >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 6V3L8 7l4 4V8a4 4 0 110 8 4 4 0 01-4-4H6a6 6 0 106-6z" fill="currentColor"/></svg>
+      <span>Retry Failed</span>
+    </button>
+
+    <label class="skip-toggle" title="Toggle skip selected rows">
+      <input type="checkbox" id="markSkipToggle" />
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Mark Skip</span>
+    </label>
+
+    <div class="controls-spacer"></div>
+
+    <div class="estimated-area">
+      <small class="muted">ETA:</small>
+      <div id="queue-eta" class="eta-value">00:00:00</div>
+    </div>
+  </div>
+  <!-- ===== end protocol-controls ===== -->
+
+  <div id="data-container" class="table-area">
+            <!-- Add FTire table -->
+            <table id="ftireTable" class="data-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Test</th>
+                        <th>Load (N)</th>
+                        <th>IP (Kpa)</th>
+                        <th>Speed (kmph)</th>
+                        <th>Longitudinal Slip (%)</th>
+                        <th>Slip Angle (deg)</th>
+                        <th>Inclination Angle (deg)</th>
+                        <th>Cleat Orientation (deg)</th>
+                        <th>Status</th>
+                        <th>Run</th>
+                        <th>Tydex</th>
+                    </tr>
+                </thead>
+                <tbody id="ftireTableBody"></tbody>
+            </table>
+
+            <!-- Add CDTire table -->
+            <table id="cdtireTable" class="data-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>No of Tests</th>
+                        <th>Test Name</th>
+                        <th>Inflation Pressure [bar]</th>
+                        <th>Velocity [km/h]</th>
+                        <th>Preload [N]</th>
+                        <th>Camber [Deg]</th>
+                        <th>Slip Angle [deg]</th>
+                        <th>Displacement [mm]</th>
+                        <th>Slip range [%]</th>
+                        <th>Cleat</th>
+                        <th>Road Surface</th>
+                        <th>Status</th>
+                        <th>Run</th>
+                        <th>Tydex</th>
+                    </tr>
+                </thead>
+                <tbody id="cdtireTableBody"></tbody>
+            </table>
+
+            <!-- For MF 6.2 Data -->
+            <table id="mf62Table" class="data-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Number of Tests</th>
+                        <th>Tests</th>
+                        <th>Inflation Pressure [PSI]</th>
+                        <th>Loads[Kg]</th>
+                        <th>Inclination Angle[°]</th>
+                        <th>Slip Angle[°]</th>
+                        <th>Slip Ratio [%]</th>
+                        <th>Test Velocity [Kmph]</th>
+                        <th>Status</th>
+                        <th>Run</th>
+                        <th>Tydex</th>
+                    </tr>
+                </thead>
+                <tbody id="mf62TableBody"></tbody>
+            </table>
+
+            <!-- For MF 5.2 Data -->
+            <table id="mf52Table" class="data-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Number Of Tests</th>
+                        <th>Tests</th>
+                        <th>Inflation Pressure [PSI]</th>
+                        <th>Loads[Kg]</th>
+                        <th>Inclination Angle[°]</th>
+                        <th>Slip Angle[°]</th>
+                        <th>Slip Ratio [%]</th>
+                        <th>Test Velocity [Kmph]</th>
+                        <th>Status</th>
+                        <th>Run</th>
+                        <th>Tydex</th>
+                    </tr>
+                </thead>
+                <tbody id="mf52TableBody"></tbody>
+            </table> <!-- Add Custom table -->
+            <table id="customTable" class="data-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>No of Tests</th>
+                        <th>Tests</th>
+                        <th>Inflation Pressure [PSI]</th>
+                        <th>Loads [Kg]</th>
+                        <th>Inclination Angle [°]</th>
+                        <th>Slip Angle [°]</th>
+                        <th>Slip Ratio [%]</th>
+                        <th>Test Velocity [Kmph]</th>
+                        <th>Cleat Orientation [°]</th>
+                        <th>Displacement [mm]</th>
+                        <th>Status</th>
+                        <th>Run</th>
+                        <th>Tydex</th>
+                    </tr>
+                </thead>
+                <tbody id="customTableBody"></tbody>
+            </table>
+        </div>
+
+  <!-- Live status bar (SSE-driven) -->
+  <div id="live-status-bar" class="live-status-bar" aria-hidden="false" role="status" title="Live run status">
+    <div class="live-left">
+      <div class="live-title">Live Run Status</div>
+      <div id="live-summary" class="live-summary">Idle</div>
+    </div>
+    <div class="live-right">
+      <div class="overall-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="overall-progress-bar" class="overall-progress-bar" style="width:0%"></div>
+      </div>
+      <div id="live-counts" class="live-counts">Queued: 0 • Running: 0 • Done: 0</div>
+    </div>
+  </div>
+    </main>
+
+    <!-- 🔵 Tydex History Sidebar (shows previously generated files for any protocol) -->
+    <aside id="tydex-sidebar" class="panel">
+      <h3>Previously Generated Tydex</h3>
+      <div id="tydex-list" class="tydex-list"></div>
+      <div class="tydex-preview">
+        <h4 id="tydex-preview-title">Preview</h4>
+        <textarea id="tydex-preview-box" readonly rows="18" style="width:100%;"></textarea>
+      </div>
+    </aside>
+
+    <footer>
+        <button id="completeProjectBtn" class="submit-button">Complete Project</button>
+        <button id="markInProgressBtn" class="submit-button" style="margin-left:12px;background:#ffc107;color:#000;">
+            Mark project as In Progress
+        </button>
+    </footer>
+    <script src="/js/select.js"></script>
+
+    <!-- run-timer must load after select.js so it can attach to row buttons -->
+    <script src="/js/run-timer.js"></script>
+
+    <script>
+  // Helper: get projectId from query (?projectId=123) or from your existing selection logic
+  function getProjectIdFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('projectId');
+  }
+
+  async function loadTydexList(projectId) {
+    const listEl = document.getElementById('tydex-list');
+    listEl.innerHTML = 'Loading...';
+    try {
+      const res = await fetch(`/api/tydex/${projectId}`);
+      const files = await res.json();
+      if (!Array.isArray(files) || files.length === 0) {
+        listEl.innerHTML = '<div style="color:#64748b">No previously generated files.</div>';
+        return;
+      }
+      listEl.innerHTML = '';
+      files.forEach(f => {
+        const item = document.createElement('div');
+        item.className = 'tydex-item';
+        item.innerHTML = `
+          <div>
+            <div><strong>${f.filename}</strong></div>
+            <small>${f.protocol} • ${new Date(f.created_at).toLocaleString()}</small>
+          </div>
+          <button class="btn btn-sm" data-id="${f.id}">Open</button>
+        `;
+        item.querySelector('button').addEventListener('click', () => previewTydex(projectId, f.id, f.filename));
+        listEl.appendChild(item);
+      });
+    } catch (e) {
+      console.error(e);
+      listEl.innerHTML = '<div style="color:#b91c1c">Failed to load files</div>';
+    }
+  }
+
+  async function previewTydex(projectId, id, filename) {
+    const titleEl = document.getElementById('tydex-preview-title');
+    const boxEl = document.getElementById('tydex-preview-box');
+    titleEl.textContent = `Preview — ${filename}`;
+    boxEl.value = 'Loading...';
+    try {
+      const res = await fetch(`/api/tydex/${projectId}/${id}`);
+      const data = await res.json();
+      if (data && data.content) {
+        boxEl.value = data.content;
+      } else {
+        boxEl.value = 'No content';
+      }
+    } catch (e) {
+      console.error(e);
+      boxEl.value = 'Failed to load content';
+    }
+  }
+
+  // Also allow resuming inputs/matrix for IN-PROGRESS via your existing "Show inputs" button.
+  // This reuses the same flow you already have for Completed, but hits /api/drafts instead.
+  async function loadDraft(projectId, protocol) {
+    const res = await fetch(`/api/drafts/${projectId}/${encodeURIComponent(protocol)}`);
+    if (res.status === 404) {
+      alert('No saved draft for this protocol yet.');
+      return;
+    }
+    const draft = await res.json();
+    // TODO: open your modal and fill with draft.inputs_json and draft.matrix_json
+    // Example:
+    // openInputsModal(draft.inputs_json, draft.matrix_json);
+    console.log('Draft loaded:', draft);
+  }
+
+  // On page load
+  document.addEventListener('DOMContentLoaded', () => {
+    const projectId = getProjectIdFromURL();
+    if (!projectId) return; // your page likely enforces selecting a project first
+    loadTydexList(projectId);
+
+    // If you have a "Show Previous Inputs" button for IN-PROGRESS:
+    const showInputsBtn = document.getElementById('show-previous-inputs'); // existing or add one
+    if (showInputsBtn) {
+      showInputsBtn.addEventListener('click', () => {
+        const protocol = document.getElementById('current-protocol').value; // or however you track it
+        loadDraft(projectId, protocol);
+      });
+    }
+  });
+</script>
+
+<script>
+// When select.html opens, also try to load current protocol draft automatically (if you track it)
+document.addEventListener('DOMContentLoaded', async () => {
+  const projectId = getProjectIdFromURL();
+  if (!projectId) return;
+
+  // You already have: loadTydexList(projectId);
+
+  // Optional: if you track "last used protocol" per project in DB, fetch it and auto-load draft
+  // Otherwise, you can show a small banner "Resume your last draft from the sidebar or click 'Show Previous Inputs'".
+});
+</script>
+
+  <!-- SSE client for live run status -->
+  <script src="/js/run-status.js"></script>
+</body>
+</html>

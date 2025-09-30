@@ -1,0 +1,468 @@
+/* Modern History Page Styling */
+.history-container {
+    /* padding: 2rem; */
+    margin: 1.5rem auto;
+    max-width: 1500px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(75, 41, 148, 0.08);
+}
+
+.page-title {
+    color: #4B2994;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    /* margin-bottom: 2rem; */
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #4B2994, #fa893e);
+    margin: 0.5rem auto;
+    border-radius: 2px;
+}
+
+/* Table Header Section */
+.table-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.search-and-new {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Search Container */
+.search-container {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+}
+
+.search-box {
+    width: 150%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    border: 1px solid grey;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+}
+
+.search-container::before {
+    content: '\f002';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+}
+
+.search-box:focus {
+    outline: none;
+    border-color: #4B2994;
+    box-shadow: 0 0 0 3px rgba(75, 41, 148, 0.1);
+    background: white;
+}
+
+/* New Request Button */
+.new-request-button {
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, #4B2994, #6b46c1);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    /* transition: all 0.3s ease; */
+    box-shadow: 0 2px 8px rgba(75, 41, 148, 0.2);
+}
+
+.new-request-button:hover {
+    background: green;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(75, 41, 148, 0.3);
+}
+
+/* Date Filters */
+.date-filters {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.date-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.date-filter label {
+    color: #4B2994;
+    font-weight: 500;
+}
+
+.date-input {
+    padding: 0.6rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: #4B2994;
+    box-shadow: 0 0 0 3px rgba(75, 41, 148, 0.1);
+    background: white;
+}
+
+.filter-button {
+    padding: 0.6rem 1.2rem;
+    background: #4B2994;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.filter-button:hover {
+    background: #6b46c1;
+    transform: translateY(-2px);
+}
+
+/* History Table */
+.history-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(75, 41, 148, 0.06);
+}
+
+.history-table th {
+    background: #f8fafc;
+    color: #4B2994;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.history-table td {
+    padding: 1rem 1.5rem;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.history-table tr:hover {
+    background: #f8f7ff;
+}
+
+/* Status Styles */
+.status-completed {
+    font-weight: 500;
+    width: 120px;
+    border: 1.5px solid #16a34a;
+    border-radius: 12px;
+    padding: 0.15rem 0.8rem;
+    display: inline-block;
+    background-color: #16a34a;
+    transition: all 0.2s ease;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    margin: 10 auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.status-in-progress {
+    font-weight: 500;
+    border: 1.5px solid #eab308;
+    border-radius: 12px;
+    padding: 0.15rem 0.8rem;
+    display: inline-block;
+    background-color: #eab308;
+    transition: all 0.2s ease;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    color: white;
+    margin: 0 auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.status-not-started,
+.status-notstarted,
+.status-not_started {
+    font-weight: 500;
+    border: 1.5px solid #dc2626;
+    border-radius: 12px;
+    padding: 0.15rem 0.8rem;
+    display: inline-block;
+    background-color: #dc2626;
+    transition: all 0.2s ease;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    color: white;
+    margin: 0 auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Add Status Icons */
+.status-completed::after {
+    content: ' ✓';
+}
+
+.status-in-progress::after {
+    content: ' ⌛';
+}
+
+.status-not-started::after,
+.status-notstarted::after,
+.status-not_started::after {
+    content: ' ✕';
+}
+
+/* Update hover effects to include the transform for both Y-axis and centering */
+.status-completed:hover,
+.status-in-progress:hover,
+.status-not-started:hover,
+.status-notstarted:hover,
+.status-not_started:hover {
+    transform: translate(-50%, -1px);
+    /* Maintain center alignment while lifting */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading and Messages */
+.loading-spinner {
+    text-align: center;
+    padding: 2rem;
+    color: #4B2994;
+}
+
+.error-message {
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    text-align: center;
+    font-weight: 500;
+}
+
+.no-data-message {
+    text-align: center;
+    padding: 2rem;
+    color: #64748b;
+    font-style: italic;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+/* Header Styles */
+.main-header {
+    background: linear-gradient(90deg, #542c7c 0%, #582C7C 60%, #fa893e 100%);
+    height: 56px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 24px rgba(44, 25, 124, 0.10);
+    z-index: 10;
+    padding: 0;
+}
+
+.logo-container {
+    position: absolute;
+    left: 0;
+    padding-left: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 40px;        /* Increased from 36px */
+    width: auto;
+}
+
+.header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 1.4rem;        /* Increased from 1.2rem */
+    font-weight: 700;
+    letter-spacing: 1.4px;    /* Increased from 1.2px */
+    text-shadow: 2px 3px 10px rgba(44, 25, 124, 0.15);  /* Enhanced shadow */
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    padding-right: 24px;
+}
+
+.icon-btn {
+    padding: 7px 12px;
+    background: transparent;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.icon-btn:hover {
+    background: rgba(255,255,255,0.13);
+    color: #fa893e;
+}
+
+.logout-btn {
+    background: #e53935 !important;
+    color: #fff !important;
+    border-radius: 6px;
+    margin-left: 6px;
+    margin-top: -3px;    /* Moved up slightly */
+}
+
+.logout-btn:hover {
+    background: #b71c1c !important;
+    color: #fff !important;
+}
+
+.view-project-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #5b2bc4; /* or reuse your gradient */
+  color: #fff;
+  font-weight: 600;
+}
+
+.view-project-btn:hover { opacity: 0.8; }
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .history-container {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .date-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .date-filter {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .search-and-new {
+        flex-direction: column;
+    }
+
+    .search-container {
+        max-width: 100%;
+    }
+
+    .new-request-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .history-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .main-header {
+        flex-direction: column;
+        height: auto;
+        padding: 8px 8px;
+        gap: 6px;
+    }
+    .header-title {
+        position: static;
+        left: unset;
+        transform: none;
+        font-size: 1rem;
+        margin: 0 auto;
+        text-align: center;
+        pointer-events: auto;
+    }
+    .logo {
+        height: 28px;
+    }
+    .logo-container {
+        position: static;
+        padding-left: 0;
+        justify-content: center;
+        width: 100%;
+    }
+    .header-nav {
+        padding-right: 0;
+        justify-content: center;
+        width: 100%;
+    }
+}

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manager Dashboard</title>
+  <link rel="stylesheet" href="/css/login.css">
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    :root{
+      --brand-900:#4B2994;
+      --brand-800:#542c7c;
+      --brand-700:#6c3fc5;
+
+      --accent-600:#fa893e;
+      --accent-700:#ff6600;
+
+      --bg:#f7f7fb;
+      --card:#ffffff;
+      --ink:#1f2430;
+      --muted:#60657a;
+      --line:#e9e7f5;
+      --shadow: 0 8px 24px rgba(43, 23, 125, .08);
+
+      --radius-xl:18px;
+      --radius-md:12px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family:"Segoe UI", Arial, system-ui, -apple-system, "Helvetica Neue", Roboto, "Noto Sans", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 800px at -10% -10%, #fbeee6 0%, rgba(251,238,230,0) 60%),
+        radial-gradient(900px 600px at 110% -20%, #f3f0fa 0%, rgba(243,240,250,0) 60%),
+        var(--bg);
+    }
+    a{ color:var(--brand-900); text-decoration:none; }
+
+    /* ====== Layout ====== */
+    /* Fixed, full-height sidebar so the purple column always spans the page */
+    .sidebar{
+      position:fixed; left:0; top:0; bottom:0; width:300px;
+      overflow-y:auto; overflow-x:hidden;
+      background:linear-gradient(180deg, var(--brand-800) 0%, var(--brand-900) 65%, #34206c 100%);
+      color:#fff; padding: 28px 22px;
+      box-shadow: 4px 0 18px rgba(26,16,66,.15);
+    }
+    /* Main content pushed to the right of the fixed sidebar */
+    .main{
+      margin-left:300px;
+      min-height:100vh;
+      display:flex; flex-direction:column;
+    }
+
+    /* ====== Sidebar content ====== */
+    .logo-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border-radius: 14px;
+  background: #ffffff0b;
+  border: 1px solid #ffffff1f;
+    }
+
+    .logo-block img {
+      height: 70px;
+      cursor: pointer;
+    }
+
+
+    .user-card{
+      display:flex; gap:12px; align-items:center;
+      padding:16px; margin:20px 0 22px;
+      border-radius:14px; background:#ffffff0f; border:1px solid #ffffff22;
+    }
+    .avatar{
+      width:40px; height:40px; border-radius:50%;
+      background: linear-gradient(140deg, #ffb88a 0%, #fa893e 70%);
+      display:flex; align-items:center; justify-content:center; font-weight:800; color:#2b193e;
+      flex:0 0 auto;
+    }
+    .user-info{ font-size:.95rem; line-height:1.35; }
+    .user-info .role{ color:#e8defc; font-weight:600; }
+
+    .nav{ display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+    .nav a, .nav button{
+      color:#f4f1ff; background:transparent; border:0; text-align:left;
+      padding:12px 14px; border-radius:12px; display:flex; align-items:center; gap:10px;
+      cursor:pointer; transition: background .15s; font-weight:700;
+    }
+    .nav a.active, .nav a:hover, .nav button:hover{ background:#ffffff14; }
+
+    /* Removed sidebar footer buttons entirely */
+
+    /* ====== Top Bar ====== */
+    .topbar{
+      position:sticky; top:0; z-index:5;
+      background:#fff; border-bottom:1px solid var(--line);
+      padding:16px 24px; display:flex; align-items:center; justify-content:space-between;
+    }
+    .crumbs{ color:var(--muted); font-weight:600; }
+    .crumbs b{ color:var(--brand-900); }
+    .actions{ display:flex; align-items:center; gap:10px; }
+    .btn-ghost{
+      padding:10px 16px; border:1px solid var(--line); border-radius:999px; background:#fff; color:var(--brand-900);
+      font-weight:700; box-shadow: var(--shadow); cursor:pointer;
+    }
+    .btn-ghost:hover{ border-color:#d8d4ef; }
+    .btn-logout{
+      background:#e53935; color:#fff; border:none; padding:10px 18px; border-radius:999px; font-weight:800; cursor:pointer;
+      box-shadow: var(--shadow);
+    }
+    .btn-logout:hover{ filter:brightness(0.95); }
+
+    /* ====== Content ====== */
+    .content{
+      max-width:1240px; margin: 26px auto 44px; padding: 0 24px;
+      display:grid; grid-template-columns: 1fr; gap:20px;
+    }
+
+    /* KPIs */
+    .kpis{ display:grid; grid-template-columns: repeat(12, 1fr); gap:20px; }
+    .kpi{
+      grid-column: span 4;
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius-xl);
+      box-shadow:var(--shadow); padding:22px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .kpi .meta{ color:var(--muted); font-weight:700; }
+    .kpi .value{ color:var(--accent-700); font-size:2.1rem; font-weight:800; letter-spacing:.3px; }
+
+    /* Toolbar + Add panel */
+    .stack{ display:flex; flex-direction:column; gap:16px; }
+
+    .toolbar{
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius-xl);
+      box-shadow:var(--shadow); padding:16px;
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+    }
+    .search{
+      flex:1; display:flex; gap:10px; align-items:center; background:#fff;
+      border:1px solid var(--line); border-radius:999px; padding:11px 16px;
+    }
+    .search input{ border:none; outline:none; width:100%; background:transparent; font-size:1rem; }
+    .search .icon{ color:var(--brand-900); }
+    .select{
+      appearance:none; border:1px solid var(--line); background:#fff; color:var(--brand-900);
+      padding:12px 16px; border-radius:999px; font-weight:700; box-shadow:var(--shadow);
+    }
+
+    .panel{
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius-xl);
+      box-shadow:var(--shadow); padding:18px;
+    }
+    .panel .title{ margin: 2px 0 12px; font-weight:800; color:var(--brand-900); letter-spacing:.2px; }
+    .form-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .input{
+      padding:12px 14px; border:1px solid var(--line); border-radius:var(--radius-md);
+      min-width:300px; background:#fff; outline:none; transition:border .15s;
+    }
+    .input:focus{ border-color: var(--brand-700); box-shadow: 0 0 0 3px rgba(75,41,148,.1); }
+    .btn-brand{
+      background: var(--brand-900); color:#fff; border:none; padding:12px 18px; border-radius:999px;
+      font-weight:800; letter-spacing:.2px; box-shadow: var(--shadow); cursor:pointer;
+    }
+    .btn-brand:hover{ background: var(--brand-700); }
+    .feedback{ margin-top:8px; font-weight:700; }
+    .feedback.error{ color:#d61f45; }
+    .feedback.success{ color:#118a55; }
+
+    /* Table card */
+    .table-wrap{
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius-xl);
+      box-shadow:var(--shadow); overflow:hidden; padding:6px;
+    }
+    table{ width:100%; border-collapse: separate; border-spacing:0; }
+    thead th{
+      background: var(--brand-900); color:#fff; text-align:left;
+      padding:16px 20px; letter-spacing:.2px; font-weight:800; font-size:.98rem;
+    }
+    tbody td{
+      padding:18px 20px; border-top:1px solid var(--line); text-align:left; color:#2f2b43; line-height:1.55; font-size:.98rem;
+    }
+    tbody tr:nth-child(odd){ background:#ffffff; }
+    tbody tr:nth-child(even){ background:#f4effc; }
+    tbody tr:hover{ background:#efeafb; }
+
+    .page-error{ margin-top:12px; color:#d61f45; }
+
+    /* Responsive */
+    @media (max-width: 960px){
+      .kpi{ grid-column: span 6; }
+    }
+    @media (max-width: 680px){
+      .main{ margin-left:0; }
+      .sidebar{ position:relative; width:auto; }
+      .input, .btn-brand{ width:100%; }
+      .kpi{ grid-column: span 12; }
+    }
+
+    /* Hidden containers so JS fetches don't break (no visual output) */
+    .visually-hidden { position:absolute !important; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar (fixed, full-height) -->
+  <aside class="sidebar">
+    <div class="logo-block">
+      <img src="/images/Apollo-Tyres-Logo.png" alt="Apollo Tyres Logo" onclick="window.location.href='/index.html'">
+      </div>
+    </div>
+
+    <div class="user-card">
+      <div class="avatar">M</div>
+      <div class="user-info">
+        <div id="managerEmail">manager@email</div>
+        <div class="role">Role: <span id="managerRole">Manager</span></div>
+      </div>
+    </div>
+
+    <nav class="nav" aria-label="Primary">
+      <a class="active"><i class="fas fa-columns"></i> Dashboard</a>
+       <!-- NEW: manager-wide history -->
+      <a href="/history.html?all=1"><i class="fas fa-stream"></i> Project History Logs</a>
+      <a href="/index.html"><i class="fas fa-cogs"></i> Tyre Virtualization</a>
+      <a href="/components/help.pdf" target="_blank"><i class="fas fa-question-circle"></i> Help</a>
+      <a href="/reset-password.html"><i class="fas fa-key"></i> Reset Password</a>
+    </nav>
+  </aside>
+
+  <!-- Main region -->
+  <div class="main">
+    <div class="topbar">
+      <div class="crumbs">Home / <b>Manager Dashboard</b></div>
+      <div class="actions">
+        <button class="btn-ghost" onclick="window.location.href='/index.html'">
+          <i class="fas fa-folder-plus"></i> New Project
+        </button>
+        <button class="btn-ghost" onclick="location.reload()">
+          <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+        <button class="btn-logout" onclick="logout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- KPIs -->
+      <section class="kpis" aria-label="Key metrics">
+        <div class="kpi">
+          <div class="meta">Total Engineers</div>
+          <div class="value" id="totalEngineers">0</div>
+        </div>
+        <div class="kpi">
+          <div class="meta">Total Projects</div>
+          <div class="value" id="totalProjects">0</div>
+        </div>
+        <div class="kpi">
+          <div class="meta">Active Engineers (7d)</div>
+          <div class="value" id="activeEngineers">0</div>
+        </div>
+      </section>
+
+      <!-- Search + Add -->
+      <div class="stack">
+        <section class="toolbar" aria-label="Search and filters">
+          <div class="search">
+            <i class="fas fa-search icon" aria-hidden="true"></i>
+            <input id="searchInput" type="text" placeholder="Search engineers by email…" aria-label="Search engineers by email">
+          </div>
+          <select id="activityFilter" class="select" aria-label="Filter by activity">
+            <option value="">All Activity</option>
+            <option value="active">Active (7d)</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </section>
+
+        <section class="panel" aria-label="Add engineer">
+          <div class="title">Add an Engineer</div>
+          <form id="addEngineerForm" class="form-row">
+            <input class="input" type="email" id="newEngineerEmail" placeholder="Enter email" required>
+            <input class="input" type="password" id="newEngineerPassword" placeholder="Enter password" required>
+            <button type="submit" class="btn-brand">Add Engineer</button>
+          </form>
+          <div id="addUserError" class="feedback"></div>
+        </section>
+
+        <section class="table-wrap" aria-label="Engineers table">
+          <table id="usersTable">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Created At</th>
+                <th>Last Login</th>
+                <th>Project Count</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </section>
+
+        <div id="errorMessage" class="page-error" role="alert"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden containers so existing JS (notifications/activity fetch) doesn't crash -->
+  <div id="notificationsArea" class="visually-hidden"></div>
+  <ul id="recentActivityList" class="visually-hidden"></ul>
+
+  <script src="/js/manager-dashboard.js"></script>
+  <script>
+    // Populate manager info from JWT + avatar initial
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          document.getElementById('managerEmail').textContent = payload.email;
+          document.getElementById('managerRole').textContent = payload.role.charAt(0).toUpperCase() + payload.role.slice(1);
+          const a = document.querySelector('.avatar');
+          if (a && payload.email) a.textContent = payload.email[0]?.toUpperCase() || 'M';
+        }
+      } catch {}
+    });
+    function logout(){ localStorage.removeItem('authToken'); window.location.href='/login.html'; }
+  </script>
+</body>
+</html>

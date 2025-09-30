@@ -1,0 +1,267 @@
+/* Additional styles specific to the MF 6.2 page */
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-header {
+    background: linear-gradient(90deg, #542c7c 0%, #582C7C 60%, #fa893e 100%);
+    padding: 10px 0;
+}
+
+/* Update logo styling */
+.logo {
+    height: 40px;      /* Increased from 32px */
+    width: auto;
+    margin-right: 12px;
+    display: block;
+}
+
+/* Enhanced header title styling */
+.header-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 1.4rem;        /* Increased from 1.2rem */
+    font-weight: 700;
+    letter-spacing: 1.4px;    /* Increased from 1.2px */
+    text-shadow: 2px 3px 10px rgba(44, 25, 124, 0.15);  /* Enhanced shadow */
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px; /* Reduced from 20px */
+    max-width: 1400px;  /* Increased from default */
+    margin: 0 auto;     /* Center the main content */
+    width: 100%;        /* Take full width up to max-width */
+}
+
+.page-title {
+    text-align: center;
+    margin: 10px 0;
+    color: #582C7C;
+    font-size: 28px;
+    width: 100%;
+}
+
+.input-container {
+    text-align: center;
+    margin: 10px 0;  /* Reduced from 15px */
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1400px;
+    margin: 5px auto;  /* Reduced from 10px */
+    gap: 5px;  /* Reduced from 10px */
+    flex-wrap: wrap;
+    padding: 10px 5px;  /* Reduced from 15px 10px */
+}
+
+.input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 0 2px;  /* Reduced from 0 5px */
+    text-align: center;
+    min-width: 220px; /* Reduced from 250px */
+}
+
+.input-group h3 {
+    color: #582C7C;
+    margin-bottom: 10px;  /* Reduced from 15px */
+    font-size: 20px;  /* Reduced from 22px */
+}
+
+.input-row {
+    margin-bottom: 8px;  /* Reduced from 10px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-row label {
+    margin-right: 10px;
+    font-weight: bold;
+    width: 40px;
+    text-align: right;
+}
+
+.input-row input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-width: 180px; /* Reduced from 200px */
+}
+
+.input-row input:invalid {
+    border-color: #d9534f;
+}
+
+.input-row input.invalid {
+    border-color: #dc3545;
+    background-color: #fff8f8;
+}
+
+.error-message {
+    color: #dc3545;
+    text-align: center;
+    font-weight: bold;
+    margin: 15px 0;
+    padding: 10px;
+    font-size: 14px;
+    min-height: 20px;
+    display: block;
+}
+
+.submit-container {
+    text-align: center;
+    margin: 30px auto;
+}
+
+.submit-button {
+    padding: 12px 40px;
+    background-color: #2E8B57; /* Green color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+    background-color: #216e43; /* Darker green on hover */
+}
+
+.logout-button {
+    position: absolute;
+    right: 20px;
+    top: 15px;           /* Moved up from 20px */
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+footer {
+    margin-top: auto;
+    padding: 10px 0;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .input-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .input-group {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .input-row input {
+        max-width: 150px;
+    }
+}
+
+/* Remove these classes */
+.file-upload-container,
+.file-upload-label,
+.file-name {
+    display: none;
+}
+
+/* Summary section styles */
+.summary-container {
+    max-width: 1400px;  /* Increased from 1200px to match */
+    margin: 20px auto;
+    padding: 20px;  /* Increased from 0 20px */
+    min-height: 150px;  /* Added minimum height */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.summary-title {
+    color: #582C7C;
+    text-align: center;
+    margin-bottom: 10px;  /* Reduced from 15px */
+    font-size: 20px;
+}
+
+.summary-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;           /* Reduced from 10px */
+    justify-content: center;
+}
+
+.summary-item {
+    background-color: #fff;
+    padding: 8px 12px;  /* Reduced from 10px 15px */
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.test-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.test-count {
+    color: #582C7C;
+    margin-left: 10px;
+}
+
+/* File upload styling */
+.file-upload {
+    display: flex;
+    align-items: center;  /* Vertically center the input */
+    justify-content: center;
+    height: 100%;  /* Take full height of parent */
+}
+
+.file-upload input[type="file"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    width: 280px;  /* Increased width */
+    height: 40px;  /* Added explicit height */
+    margin-left: 20px;
+    font-size: 11px;  /* Further reduced font size from 12px */
+}
+
+.file-upload input[type="file"]::-webkit-file-upload-button {
+    background: #582C7C;
+    color: white;
+    padding: 8px 12px;  /* Increased padding */
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 80px;
+    margin-right: 12px;  /* Add space after button */
+    font-size: 11px;  /* Further reduced font size from 12px */
+}
+
+.file-upload input[type="file"]::-webkit-file-upload-button:hover {
+    background: #4a2569;
+}
